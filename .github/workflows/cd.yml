@@ -14,11 +14,6 @@ jobs:
       id-token: 'write'
 
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          workload_identity_provider: 'projects/136926291546/locations/global/workloadIdentityPools/github/providers/my-repo'
-          service_account: 'cloud-run-deployer@notely-513810.iam.gserviceaccount.com'
 
       - name: Check out code
         uses: actions/checkout@v6
@@ -30,6 +25,12 @@ jobs:
 
       - name: Build the app
         run: bash scripts/buildprod.sh
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/136926291546/locations/global/workloadIdentityPools/github/providers/my-repo'
+          service_account: 'cloud-run-deployer@notely-513810.iam.gserviceaccount.com'
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v3'
