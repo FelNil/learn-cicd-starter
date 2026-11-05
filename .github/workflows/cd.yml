@@ -36,6 +36,8 @@ jobs:
 
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
+      - name: 'login'
+        run: gcloud auth login
       - name: 'Push to Artifact Registry'
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-513810/notely-ar-repo/notely:latest .
 
