@@ -13,6 +13,9 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
 
       - name: Check out code
@@ -22,6 +25,9 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: "1.27.1"
+
+      - namn: 'install goose'
+        run: go install goose
 
       - name: Build the app
         run: bash scripts/buildprod.sh
@@ -37,6 +43,10 @@ jobs:
 
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
+
+
+      - name: 'migrate database'
+        run: bash scripts/migrate.sh
 
       - name: 'Push to Artifact Registry'
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-513810/notely-ar-repo/notely:latest .
